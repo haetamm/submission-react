@@ -1,0 +1,55 @@
+.archived {
+    color: pink;
+}
+
+.line-clamp {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.note-card {
+    margin: 20px 0 0 0;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 8px;
+
+    .note-card-header {
+        display: flex;
+        align-items: center;
+
+        .note-card-header__wrap {
+            flex-shrink: 1;
+            flex: 1 1 0%;
+
+            .note-card__title {
+                margin-bottom: 3px;
+            }
+        }
+    }
+
+    .note-card-body {
+        margin-top: 5px;
+        height: 130px;
+        overflow: auto;
+    }
+
+    .note-card-footer {
+        display: flex;
+        padding: 3px 3px 5px 3px;
+        font-size: 20px;
+        align-items: center;
+        margin-top: 8px;
+        background-color: transparent;
+        border-radius: 3px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+
+        .note-card-footer__detail {
+            flex: 1 1 0%;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+}

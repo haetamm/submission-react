@@ -1,0 +1,27 @@
+.note-header {
+    margin: 0 5px 0 5px;
+    display: inline-block;
+    align-items: center;
+    font-size: 2em;
+
+    .title {
+        flex: 1 1 0%;
+    }
+
+    .search {
+        align-items: center;
+        padding: 5px;
+    }
+}
+
+@media only screen and (min-width: 430px) {
+    .note-header {
+        margin: 0 0 0 10px;
+        display: flex;
+
+        .search-label {
+            display: inline;
+            margin-left: 5px;
+        }
+    }
+}

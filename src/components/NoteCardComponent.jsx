@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import { formatDate } from "../utils/helper";
 import ModalComponent from "./ModalComponent";
+import '../styles/NoteCardComponent.scss';
 
 const NoteCardComponent = ({
     created_at, id, title, description, archive, onDelete, getNoteById, updateNoteById, activeTab

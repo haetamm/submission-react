@@ -4,6 +4,7 @@ import NoteHeaderComponent from "./NoteHeaderComponent";
 import NoteCardComponent from "./NoteCardComponent"
 import NotFoundComponent from "./NotFoundComponent";
 import NoteNavComponent from './NoteNavComponent';
+import '../styles/NoteComponent.scss';
 
 const NoteComponent = ({
     notes, deleteNote, getNoteById, updateNoteById, searchNoteByTitle

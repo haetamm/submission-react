@@ -1,0 +1,63 @@
+.tabs {
+    background-color: transparent;
+}
+
+.tabs input[type="radio"] {
+    display: none;
+}
+
+.note-height {
+    display: none;
+}
+
+.tabs input[type="radio"]:checked~.note-height {
+    display: block;
+}
+
+.search-title {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.note-height {
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.note-component {
+    margin: 20px 10px 20px 10px;
+
+    .note-wrap {
+        display: grid;
+        grid-template-columns: 99%;
+    }
+}
+
+@media only screen and (min-width: 430px) {
+    .note-component {
+        overflow: auto;
+
+        .note-wrap {
+            grid-template-columns: 49% 50%;
+            gap: 1px;
+        }
+    }
+}
+
+@media only screen and (min-width: 675px) {
+    .note-component {
+        margin: 0 5px 15px 5px;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+    .note-component {
+        .note-wrap {
+            display: grid;
+            grid-template-columns: 33% 33% 33%;
+            gap: 2px;
+        }
+    }
+}

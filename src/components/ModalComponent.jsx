@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { formatDate } from "../utils/helper";
+import '../styles/ModalComponent.scss';
 
 
 const ModalComponent = ({ openDelete, close, onDelete, id, detail, setDetail }) => {

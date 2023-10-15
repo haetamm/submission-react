@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
+import '../styles/FormComponent.scss';
 
 const FormComponent = ({ addNote }) => {
   const [form, setForm] = useState({ title: '', description: '' });
@@ -37,7 +38,7 @@ const FormComponent = ({ addNote }) => {
         if (descriptionValue.trim() === '') {
             setErrors({
                 ...errors,
-                description: 'Catatan harus diisi dan',
+                description: 'Catatan harus diisi',
             });
         } else {
             setErrors({
