@@ -1,0 +1,36 @@
+.mobile-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid #e0e0e0;
+    z-index: 40;
+    padding: 10px;
+}
+
+.nav-item {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+  
+.nav-link {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    color: black;
+}
+
+
+@media (min-width: 767px) {
+    .mobile-nav {
+        display: none;
+    }
+}

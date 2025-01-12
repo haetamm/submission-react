@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-const FormSearchNote = ({ onSearch }) => {
+const SearchNote = () => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    onSearch(value);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?title=${encodeURIComponent(query)}`);
+      setQuery("");
+    }
   };
-
   return (
     <>
       <section className="section-search">
-        <form className="search-form" onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit} className="search-form">
           <div className="wrap-input">
             <input
               value={query}
-              onChange={handleInputChange}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Cari Catatan"
               type="search"
             />
@@ -32,8 +34,4 @@ const FormSearchNote = ({ onSearch }) => {
   );
 };
 
-FormSearchNote.propTypes = {
-  onSearch: PropTypes.func.isRequired,
-};
-
-export default FormSearchNote;
+export default SearchNote;

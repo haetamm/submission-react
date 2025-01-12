@@ -1,10 +1,18 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "./styles/index.css";
-import App from "./App.jsx";
+import { RouterProvider } from "react-router-dom";
+import router from "./router.jsx";
+import { Provider } from "react-redux";
+import { legacy_createStore as createStore } from "redux";
+import { reducers } from "./store/index.js";
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+const store = createStore(reducers);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </React.StrictMode>
 );
