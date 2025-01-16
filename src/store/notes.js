@@ -1,34 +1,82 @@
-import { notes } from "../utils/local-data";
-
-const DEFAULT_STATE = Array.isArray(notes) ? notes : [];
+const DEFAULT_STATE = {
+  noteById: null,
+  notesActive: [],
+  notesArchived: [],
+};
 
 const notesReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
-    case "GET_ALL_NOTES":
-      return state;
+    case "SET_ACTIVE_NOTES":
+      return {
+        ...state,
+        notesActive: action.payload,
+      };
+    case "SET_ARCHIVED_NOTES":
+      return {
+        ...state,
+        notesArchived: action.payload,
+      };
+    case "SET_NOTE_BY_ID":
+      return {
+        ...state,
+        noteById: action.payload,
+      };
     case "ADD_NOTE":
-      return [...state, action.payload];
+      return {
+        ...state,
+        notesActive: [...state.notesActive, action.payload],
+      };
     case "DELETE_NOTE_BY_ID":
-      return state.filter((note) => note.id !== action.payload);
-    case "UPDATE_ARCHIVED":
-      return state.map((note) =>
-        note.id === action.payload.id
-          ? { ...note, archived: !note.archived }
-          : note
-      );
-    case "UPDATE_NOTE_BY_ID":
-      return state.map((note) =>
-        note.id === action.payload.id
-          ? { ...note, title: action.payload.title, body: action.payload.body }
-          : note
-      );
+      return {
+        ...state,
+        notesActive: state.notesActive.filter(
+          (note) => note.id !== action.payload
+        ),
+        notesArchived: state.notesArchived.filter(
+          (note) => note.id !== action.payload
+        ),
+        noteById: null,
+      };
+    case "ARCHIVED_BY_ID":
+      return {
+        ...state,
+        notesActive: state.notesActive.filter(
+          (note) => note.id !== action.payload
+        ),
+        noteById:
+          state.noteById && state.noteById.id === action.payload
+            ? { ...state.noteById, archived: true }
+            : state.noteById,
+      };
+    case "UNARCHIVED_BY_ID":
+      return {
+        ...state,
+        notesArchived: state.notesArchived.filter(
+          (note) => note.id !== action.payload
+        ),
+        noteById:
+          state.noteById && state.noteById.id === action.payload
+            ? { ...state.noteById, archived: false }
+            : state.noteById,
+      };
     default:
       return state;
   }
 };
 
-export const getAllNotes = () => ({
-  type: "GET_ALL_NOTES",
+export const setActiveNotes = (notes) => ({
+  type: "SET_ACTIVE_NOTES",
+  payload: notes,
+});
+
+export const setArchivedNotes = (notes) => ({
+  type: "SET_ARCHIVED_NOTES",
+  payload: notes,
+});
+
+export const setNoteById = (notes) => ({
+  type: "SET_NOTE_BY_ID",
+  payload: notes,
 });
 
 export const addNote = (note) => ({
@@ -41,14 +89,14 @@ export const deleteNoteById = (id) => ({
   payload: id,
 });
 
-export const updateArchived = (id) => ({
-  type: "UPDATE_ARCHIVED",
-  payload: { id },
+export const archivedById = (id) => ({
+  type: "ARCHIVED_BY_ID",
+  payload: id,
 });
 
-export const updateNoteById = (id, title, body) => ({
-  type: "UPDATE_NOTE_BY_ID",
-  payload: { id, title, body },
+export const unarchiveById = (id) => ({
+  type: "UNARCHIVED_BY_ID",
+  payload: id,
 });
 
 export default notesReducer;

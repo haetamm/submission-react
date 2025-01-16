@@ -1,74 +1,41 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-import { validateBody, validateTitle } from "../utils/validation.js";
-import { addNote, updateNoteById } from "../store/notes"; // Impor action dari Redux store
+import React, { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addNote } from "../store/notes";
+import { AppContext } from "../contexts/AppContext.js";
+import { translatedNames } from "../utils/lang.js";
+import useInput from "../hooks/useInput.js";
+import InputCustom from "./InputCustom.jsx";
+import { createNote } from "../utils/api.js";
+import { toast } from "sonner";
 
-const FormNote = ({ id }) => {
+const FormNote = () => {
   const dispatch = useDispatch();
-  const [charCount, setCharCount] = useState(0);
-  const [errors, setErrors] = useState({ title: "", body: "" });
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { language } = useContext(AppContext);
 
-  const notes = useSelector((state) => state.notes);
+  const {
+    value: title,
+    handleChange: handleTitleChange,
+    error: titleError,
+  } = useInput("title");
 
-  useEffect(() => {
-    if (id) {
-      const note = notes.find((note) => note.id === id);
+  const {
+    value: body,
+    handleChange: handleBodyChange,
+    error: bodyError,
+  } = useInput("body");
 
-      if (note) {
-        setTitle(note.title);
-        setBody(note.body);
-        setCharCount(note.title.length);
-      }
-    }
-  }, [id, dispatch, notes]);
-
-  const handleTitleChange = (e) => {
-    const value = e.target.value;
-    setCharCount(value.length);
-    setTitle(value);
-    setErrors((prevError) => ({
-      ...prevError,
-      title: validateTitle(value),
-    }));
-  };
-
-  const handleBodyChange = (e) => {
-    const value = e.target.value;
-    setBody(value);
-    setErrors((prevError) => ({
-      ...prevError,
-      body: validateBody(value),
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const titleError = validateTitle(title);
-    const bodyError = validateBody(body);
-    setErrors({ title: titleError, body: bodyError });
 
     if (!titleError && !bodyError) {
-      if (id) {
-        dispatch(updateNoteById(id, title, body));
+      const { data } = await createNote({ title, body }, setLoading);
+      if (data) {
+        dispatch(addNote(data));
         dispatch({
           type: "CLOSE_MODAL",
         });
-      } else {
-        dispatch(
-          addNote({
-            id: new Date().toISOString(),
-            title,
-            body,
-            createdAt: new Date().toISOString(),
-            archived: false,
-          })
-        );
-        dispatch({
-          type: "CLOSE_MODAL",
-        });
+        toast.success("Catatan berhasil dibuat");
       }
     }
   };
@@ -76,41 +43,33 @@ const FormNote = ({ id }) => {
   return (
     <form className="note-form" onSubmit={handleSubmit}>
       <div className="wrap-input">
-        <input
+        <InputCustom
           type="text"
-          placeholder="Tulis judul disini"
           name="title"
           value={title}
-          onChange={handleTitleChange}
+          handleChange={handleTitleChange}
+          error={titleError}
         />
-        <div className="wrap-message">
-          <div className="wrap-error">
-            {errors.title && (
-              <small className="error-message">{errors.title}</small>
-            )}
-          </div>
-          <div className="char-length">{charCount}/50</div>
-        </div>
       </div>
       <div className="wrap-input">
         <textarea
-          placeholder="Tuliskan catatanmu disini"
+          placeholder={translatedNames[language]["body"]}
           rows={6}
           name="body"
           value={body}
           onChange={handleBodyChange}
         />
-        {errors.body && <small className="error-message">{errors.body}</small>}
+        {bodyError && <small className="error-message">{bodyError}</small>}
       </div>
-      <button className="cursor-pointer" type="submit">
-        {id ? "Perbarui Catatan" : "Tambah Catatan"}
+      <button
+        disabled={!title || !body}
+        className="cursor-pointer add-note"
+        type="submit"
+      >
+        {loading ? "Loading" : translatedNames[language]["add"]}
       </button>
     </form>
   );
-};
-
-FormNote.propTypes = {
-  id: PropTypes.string,
 };
 
 export default FormNote;

@@ -1,10 +1,13 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import ArchivePage from "./pages/ArchivePage";
 import HomePage from "./pages/HomePage";
 import NotfoundPage from "./pages/NotfoundPage";
 import SearchPage from "./pages/SearchPage";
 import DefaultLayout from "./layouts/DefaultLayout";
 import DetailPage from "./pages/DetailPage";
+import GuestLayout from "./layouts/GuestLayout";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const routerConfig = [
   {
@@ -14,7 +17,7 @@ const routerConfig = [
       {
         path: "/",
         element: <HomePage />,
-        handle: { name: "Home" },
+        handle: { name: "Beranda" },
       },
       {
         path: "/archive",
@@ -30,6 +33,24 @@ const routerConfig = [
         path: "/notes/:id",
         element: <DetailPage />,
         handle: { name: "Detail Catatan" },
+      },
+    ],
+  },
+  {
+    path: "/guest",
+    element: <GuestLayout />,
+    children: [
+      {
+        path: "/guest",
+        element: <Navigate to="login" />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
       },
     ],
   },

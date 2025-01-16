@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../contexts/AppContext";
+import { translatedNames } from "../utils/lang";
+import { FaSearch } from "react-icons/fa";
 
 const SearchNote = () => {
+  const { language } = useContext(AppContext);
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
@@ -20,12 +24,12 @@ const SearchNote = () => {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Cari Catatan"
+              placeholder={translatedNames[language]["search"]}
               type="search"
             />
           </div>
-          <button type="submit" className="cursor-pointer">
-            Cari
+          <button type="submit" className="cursor-pointer search-button">
+            <FaSearch />
           </button>
         </form>
         <div className="search-note"></div>

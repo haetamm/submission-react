@@ -1,46 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { MdDelete } from "react-icons/md";
-import { RiEdit2Fill, RiSaveFill } from "react-icons/ri";
-import { useDispatch } from "react-redux";
-import { updateArchived } from "../store/notes";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import AvatarUser from "./AvatarUser";
+import ButtonArchive from "./ButtonArchive";
+import { isActive } from "../utils";
 
 const CardNote = ({ id, title, createdAt, body, archived }) => {
+  const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const { img_url, name } = useSelector((state) => state.user);
   return (
     <>
       <div className="note-container">
         <div className="note-header">
           <div className="note-header__wrap">
-            <img
-              src="https://pbs.twimg.com/profile_images/1269621458822664192/NHV_D34w_400x400.jpg"
-              alt="Avatar"
-            />
+            <AvatarUser img={img_url} />
             <div className="user-info">
-              <Link to={`/notes/${id}`} className="name">
-                <span>{title}</span>
-              </Link>
+              <div className="name">
+                <span>{name}</span>
+              </div>
               <span className="handle">{createdAt}</span>
             </div>
           </div>
-          <div
-            onClick={() => {
-              dispatch({
-                type: "OPEN_MODAL",
-                payload: {
-                  type: "update",
-                  id: id,
-                },
-              });
-            }}
-            className="cursor-pointer"
-          >
-            <RiEdit2Fill className="icon" />
-          </div>
         </div>
-        <div className="note-content">{body}</div>
-        <div className="note-actions">
+        <Link to={`/notes/${id}`} className="wrap-note-content">
+          <div className="note-content">
+            <p className="note-title">{title}</p>
+            <p>{body}</p>
+          </div>
+        </Link>
+        <div
+          className={`${
+            isActive(pathname, "/search") ? "justify-endd" : "justify-beetween"
+          } note-actions`}
+        >
           <div
             onClick={() => {
               dispatch({
@@ -55,14 +50,7 @@ const CardNote = ({ id, title, createdAt, body, archived }) => {
           >
             <MdDelete className="icon" />
           </div>
-          <div
-            onClick={() => {
-              dispatch(updateArchived(id));
-            }}
-            className="cursor-pointer"
-          >
-            <RiSaveFill className={`icon ${archived ? "active" : ""}`} />
-          </div>
+          <ButtonArchive id={id} archived={archived} />
         </div>
       </div>
     </>

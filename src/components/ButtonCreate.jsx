@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaPencil } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
+import { AppContext } from "../contexts/AppContext";
+import { translatedNames } from "../utils/lang";
 
 const ButtonCreate = () => {
   const dispatch = useDispatch();
+  const { language } = useContext(AppContext);
   return (
     <>
       <button
@@ -16,10 +19,13 @@ const ButtonCreate = () => {
           });
         }}
         aria-label="add note"
-        className="custom-button"
+        className="custom-button cursor-pointer"
         type="button"
       >
-        <FaPencil className="h-8 w-8" />
+        <FaPencil className="h-8 w-8 button-icon" />
+        <div className="button-label">
+          {translatedNames[language]["Tambah"]}
+        </div>
       </button>
     </>
   );

@@ -1,46 +1,63 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/sidebar.css";
-import "../styles/mobile-nav.css";
 import { navItems } from "../utils/fields";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { isActive } from "../utils";
+import ButtonCreate from "./ButtonCreate";
+import { AppContext } from "../contexts/AppContext";
+import { translatedNames } from "../utils/lang";
+import { useDispatch, useSelector } from "react-redux";
+import { IoMdLogOut } from "react-icons/io";
 
-const Sidebar = () => {
+const SideBar = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const { language } = useContext(AppContext);
+  const { name } = useSelector((state) => state.user);
 
   return (
     <>
-      <div className="wrap-sidebar">
-        <div className="sidebar">
-          {navItems.map(({ name, route, icon: Icon }) => (
-            <Link key={name} to={route}>
-              <Icon
-                className={`icon  ${isActive(pathname, route) ? "active" : ""}`}
-              />
-              <h3 className={`${isActive(pathname, route) ? "active" : ""}`}>
-                {name}
-              </h3>
-            </Link>
-          ))}
-          <button
-            onClick={() => {
-              dispatch({
-                type: "OPEN_MODAL",
-                payload: {
-                  type: "add",
-                },
-              });
-            }}
-            className="post-btn cursor-pointer"
-          >
-            <div className="add">Tambah</div>
-          </button>
+      <aside>
+        <div className="wrap-logo">
+          <div className="logo">TWEETNOTE</div>
         </div>
-      </div>
+        <div className="wrap-sidebar">
+          <div className="sidebar">
+            {navItems.slice(0, 3).map(({ name, route, icon: Icon }) => (
+              <Link key={name} to={route}>
+                <Icon
+                  className={`icon  ${
+                    isActive(pathname, route) ? "active" : ""
+                  }`}
+                />
+                <h3 className={`${isActive(pathname, route) ? "active" : ""}`}>
+                  {translatedNames[language][name]}
+                </h3>
+              </Link>
+            ))}
+            <ButtonCreate />
+
+            <div
+              onClick={() => {
+                dispatch({
+                  type: "OPEN_MODAL",
+                  payload: {
+                    type: "logout",
+                  },
+                });
+              }}
+              className="wrap-logout"
+            >
+              <div className="wrap-avatar">
+                <IoMdLogOut className="icon" />
+                <h3>{name}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </>
   );
 };
 
-export default Sidebar;
+export default SideBar;

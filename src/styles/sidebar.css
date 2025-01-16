@@ -1,8 +1,8 @@
 .sidebar {
     width: 250px;
     height: 100%;
-    background-color: #fff;
-    color: #000;
+    background-color: transparent;
+    color: var(--color);
     display: flex;
     flex-direction: column;
     padding: 20px 0px;
@@ -11,7 +11,7 @@
 
 .sidebar a {
     text-decoration: none;
-    color: #000;
+    color: var(--color);
     display: flex;
     align-items: center;
     padding: 10px;
@@ -20,7 +20,8 @@
 }
 
 .sidebar a:hover {
-    background-color: #eee;
+    background-color: var(--color);
+    color: var(--background-color);
 }
 
 .sidebar .icon {
@@ -28,29 +29,42 @@
     font-size: 20px;
 }
 
-.sidebar .post-btn {
-    margin-top: 25px;
-    background-color: #1d4ed8;
-    color: #fff;
-    padding: 10px;
-    border-radius: 30px;
-    font-weight: bold;
-    transition: background 0.3s, color 0.3s;
-}
-
-.post-btn {
-    display: flex;
-    justify-content: center;
+.sidebar-link img {
+    border-radius: 100%;
 }
 
 .add {
     text-align: center;
 }
 
-.sidebar .post-btn:hover {
-    background-color: #333;
-    color: #fff;
+.wrap-logout {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    background-color: transparent;
+    color: var(--color);
+    padding: 5px 7px 5px 7px;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: first baseline;
 }
+
+.wrap-logout:hover {
+    background-color: var(--color);
+    color: var(--background-color);
+}
+
+.wrap-avatar {
+    display: flex;
+    align-items: center;
+}
+
+.wrap-avatar .icon {
+    margin-right: 8px;
+    height: 35px;
+    width: 35px;
+}
+
 
 @media (min-width: 1024px) {
     .sidebar {
