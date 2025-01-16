@@ -13,9 +13,11 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "ligth" ? "dark" : "light"));
-  };
+  const toggleTheme = useCallback(() => {
+    const newTheme = theme === "ligth" ? "dark" : "ligth";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  }, [theme]);
 
   const toggleLanguage = useCallback(() => {
     const newLanguage = language === "id" ? "en" : "id";
@@ -30,7 +32,7 @@ export const AppProvider = ({ children }) => {
       language,
       toggleLanguage,
     }),
-    [theme, language, toggleLanguage]
+    [theme, language, toggleLanguage, toggleTheme]
   );
 
   return (
