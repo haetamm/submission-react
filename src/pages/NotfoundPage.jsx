@@ -1,8 +1,10 @@
-import React from "react";
+import React from 'react';
 
 const NotfoundPage = () => {
   return (
     <>
+      <title>NotFound / XClone</title>
+      <meta name="description" content="NotFound Page" />
       <div className="wrap-not-found-page">
         <h1>Not Found 404</h1>
       </div>

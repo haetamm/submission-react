@@ -1,27 +1,32 @@
-import React from "react";
-import "../styles/guest-layout.css";
-import { AppProvider } from "../contexts/AppProvider";
-import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Toaster } from "sonner";
+import React, {  } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import '../styles/guest-layout.css';
+import { ToastContainer } from 'react-toastify';
+import usePermission from '../hooks/usePermission';
+import { urlPage } from '../utils/constans';
+import Loader from '../components/Loader';
+import usePreload from '../hooks/usePreload';
 
 const GuestLayout = () => {
-  const { token } = useSelector((state) => state.user);
+  const { isAuthenticated } = usePermission();
+  const { loading } = usePreload();
 
-  if (token) {
-    return <Navigate to={"/"} />;
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to={urlPage.HOME} />;
   }
 
   return (
     <>
-      <AppProvider>
-        <div className="login-wrapper">
-          <div className="login-container">
-            <Outlet />
-          </div>
+      <ToastContainer />
+      <div className="login-wrapper">
+        <div className="login-container">
+          <Outlet />
         </div>
-      </AppProvider>
-      <Toaster className="text-lg" position="top-center" />
+      </div>
     </>
   );
 };

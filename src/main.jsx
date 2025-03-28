@@ -1,18 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./styles/index.css";
-import { RouterProvider } from "react-router-dom";
-import router from "./router.jsx";
-import { Provider } from "react-redux";
-import { legacy_createStore as createStore } from "redux";
-import { reducers } from "./store/index.js";
+import React, { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './styles/index.css';
+import { Provider } from 'react-redux';
+import store from './stores';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
+import 'nprogress/nprogress.css';
+import { AppProvider } from './context/AppProvider';
 
-const store = createStore(reducers);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <AppProvider >
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </AppProvider>
+  </StrictMode>,
 );

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Loader = () => {
   return (
@@ -10,24 +10,24 @@ const Loader = () => {
 
 const styles = {
   overlay: {
-    position: "fixed",
+    position: 'fixed',
     top: 0,
     left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "blue",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'var(--background-color)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 9999,
   },
   loader: {
-    width: "50px",
-    height: "50px",
-    border: "6px solid #fff",
-    borderTop: "6px solid #3498db",
-    borderRadius: "50%",
-    animation: "spin 1s linear infinite",
+    width: '50px',
+    height: '50px',
+    border: '6px solid #fff',
+    borderTop: '6px solid var(--color-blue)',
+    borderRadius: '50%',
+    animation: 'spin 1s linear infinite',
   },
 };
 

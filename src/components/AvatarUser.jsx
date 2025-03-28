@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const AvatarUser = ({ img }) => {
   return (
@@ -8,10 +8,11 @@ const AvatarUser = ({ img }) => {
         src={`${
           img
             ? img
-            : "https://pbs.twimg.com/profile_images/1269621458822664192/NHV_D34w_400x400.jpg"
+            : 'https://pbs.twimg.com/profile_images/1269621458822664192/NHV_D34w_400x400.jpg'
         }`}
         alt="AvatarUser"
         height={40}
+        className='rounded-full'
       />
     </>
   );

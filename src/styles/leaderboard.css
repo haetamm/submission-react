@@ -1,0 +1,172 @@
+.leaderboard-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 10px;
+  color: var(--color);
+}
+
+.leaderboard-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 60px;
+}
+
+.leaderboard-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--color-blue);
+}
+
+.crown-left,
+.crown-right {
+  width: 40px;
+  height: 40px;
+  background: url("https://img.icons8.com/emoji/48/crown-emoji.png") no-repeat
+    center;
+  background-size: contain;
+  position: absolute;
+}
+
+.crown-left {
+  left: 20px;
+}
+
+.crown-right {
+  right: 20px;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  background: #f7f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
+.leaderboard-row.first-place {
+  background: linear-gradient(90deg, #ffd700, #ffec99);
+}
+
+.rank {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.rank-circle {
+  width: 40px;
+  height: 40px;
+  background: var(--color-blue);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  gap: 5px;
+}
+
+.leaderboard-row.first-place .rank-circle {
+  background: #d4af37;
+}
+
+.player-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-icon {
+  width: 40px;
+  height: 40px;
+  background: #d1d5db;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.player-name {
+  font-weight: bold;
+  color: #14171a;
+}
+
+.score {
+  width: 80px;
+  text-align: right;
+  font-weight: bold;
+  color: var(--color-blue);
+}
+
+.points {
+  width: 50px;
+  text-align: right;
+  color: var(--color-blue);
+  font-weight: bold;
+}
+
+@media (min-width: 1024px) {
+  .leaderboard-container {
+    margin: 70px auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: var(--background-gray);
+  }
+  .leaderboard-header {
+    margin-top: 0;
+  }
+  .leaderboard-row {
+    padding: 10px;
+    font-size: 1.2rem;
+    gap: 20px;
+  }
+  .rank-circle {
+    width: 43px;
+    height: 43px;
+  }
+  .player-icon {
+    width: 43px;
+    height: 43px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .leaderboard-container {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 640px) {
+  .leaderboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .crown-left,
+  .crown-right {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+  }
+
+  .crown-left {
+    left: 10px;
+  }
+
+  .crown-right {
+    right: 10px;
+  }
+}

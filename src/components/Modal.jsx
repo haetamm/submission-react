@@ -1,25 +1,26 @@
-import { MdClose } from "react-icons/md";
-import "../styles/modal.css";
-import FormNote from "./FormNote";
-import { useDispatch, useSelector } from "react-redux";
-import Confirmation from "./Confirmation";
-import { useContext } from "react";
-import { translatedNames } from "../utils/lang";
-import { AppContext } from "../contexts/AppContext";
+import React from 'react';
+import { MdClose } from 'react-icons/md';
+import '../styles/modal.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModal } from '../stores/modal/action';
+import Confirmation from './Confirmation';
+import useLanguage from '../hooks/useLanguage';
+import { translatedNames } from '../utils/lang';
+import FormThread from './FormThread';
 
 const Modal = () => {
   const dispatch = useDispatch();
-  const { isOpen, type, id } = useSelector((state) => state.modal);
-  const { language } = useContext(AppContext);
+  const { isOpen, type } = useSelector((state) => state.modal);
+  const language = useLanguage();
 
   return (
     <>
       {isOpen && (
         <div className="modal-custom">
-          <div className={`modal-content mt-besar`}>
+          <div className="modal-content">
             <div
               className={`modal-card ${
-                type === "add" ? "besar-modal" : "kecil-modal"
+                type === 'add' ? 'besar-modal' : 'kecil-modal'
               }`}
             >
               <div className="modal-card-kecil__body">
@@ -28,19 +29,16 @@ const Modal = () => {
                   <MdClose
                     className="icon cursor-pointer"
                     onClick={() => {
-                      dispatch({
-                        type: "CLOSE_MODAL",
-                      });
+                      dispatch(closeModal());
                     }}
                   />
                 </div>
                 <div className="besar-modal__wrap">
-                  {type === "add" && <FormNote />}
-                  {type !== "add" && (
+                  {type === 'add' && <FormThread />}
+                  {type !== 'add' && (
                     <Confirmation
                       name={translatedNames[language][type]}
-                      id={id}
-                      onClose={() => dispatch({ type: "CLOSE_MODAL" })}
+                      onClose={() => dispatch(closeModal())}
                     />
                   )}
                 </div>

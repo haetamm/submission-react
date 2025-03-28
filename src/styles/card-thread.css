@@ -1,0 +1,200 @@
+/* thread card component */
+.thread-container {
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--color);
+  padding: 20px 20px 14px 20px;
+  width: 100%;
+}
+
+.thread-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.thread-header__wrap {
+  display: flex;
+  align-items: center;
+}
+
+.thread-header img {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
+}
+
+.thread-header .user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info .name {
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+}
+
+.wrap-thread-content {
+  text-decoration: none;
+  color: inherit;
+}
+
+.user-info .handle {
+  color: #657786;
+  font-size: 14px;
+}
+
+.thread-container .thread-content {
+  font-size: 16px;
+  padding-bottom: 10px;
+  text-decoration: none;
+}
+
+.thread-content {
+  margin: 12px 0;
+}
+
+.thread-title {
+  display: flex;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  text-decoration: none;
+  justify-content: start;
+  color: var(--color);
+}
+
+.thread-title:hover {
+  text-decoration: underline;
+}
+
+.thread-body {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color);
+  word-wrap: break-word;
+  text-align: justify;
+}
+
+.thread-category {
+  color: var(--color-blue);
+  margin-top: 10px;
+}
+
+.thread-category:hover {
+  text-decoration: underline;
+}
+
+.wrap-icon-button {
+  display: flex;
+  align-items: center;
+  gap: 0 20px;
+  justify-content: space-between;
+}
+
+.wrap-icon {
+  display: flex;
+  align-items: center;
+  gap: 0 5px;
+}
+
+.thread-body h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.thread-body h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.thread-body p {
+  margin: 8px 0;
+}
+
+.thread-body blockquote {
+  border-left: 4px solid var(--color, #ccc);
+  padding-left: 12px;
+  margin: 10px 0;
+  color: var(--text-muted, #666);
+  font-style: italic;
+}
+
+.thread-body ul,
+.thread-body ol {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+.thread-body li {
+  margin: 4px 0;
+}
+
+.thread-body a {
+  color: var(--link-color, var(--color-blue));
+  text-decoration: underline;
+}
+
+.thread-body a:hover {
+  text-decoration: none;
+}
+
+.thread-body strong {
+  font-weight: bold;
+}
+
+.thread-body em {
+  font-style: italic;
+}
+
+.thread-body code {
+  background-color: #666;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+  color: #ffff;
+}
+
+.thread-actions {
+  color: var(--color);
+  align-items: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.inline {
+  display: inline-block;
+  width: 100%;
+}
+
+.justify-beetween {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.justify-endd {
+  justify-content: end;
+}
+
+.thread-actions span {
+  display: flex;
+  align-items: center;
+}
+
+.thread-actions span svg {
+  margin-right: 5px;
+}
+
+@media (min-width: 767px) {
+  .thread-container {
+    border-bottom: 1px solid var(--color);
+    border-left: none;
+    border-right: none;
+  }
+}

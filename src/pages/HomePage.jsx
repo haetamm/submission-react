@@ -1,47 +1,50 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { showFormattedDate } from "../utils";
-import CardNote from "../components/CardNote";
-import { AppContext } from "../contexts/AppContext";
-import { translatedNames } from "../utils/lang";
-import { getActiveNotes } from "../utils/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setActiveNotes } from "../store/notes";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { transformThreadsWithOwners } from '../utils/helper';
+import CardThread from '../components/CardThread';
+import { asyncPopulateUsersAndThreads } from '../stores/shared/action';
+import useLanguage from '../hooks/useLanguage';
+import { translatedNames } from '../utils/lang';
+import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
+import usePermission from '../hooks/usePermission';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const { language } = useContext(AppContext);
-  const notes = useSelector((state) => state.notes.notesActive);
+  const language = useLanguage();
+  const { loading } = useSelector((state) => state.shared);
+  const { threads } = useSelector((state) => state.threads);
+  const { users } = useSelector((state) => state.users);
+  const { authUser } = usePermission();
+  const userId = authUser?.id || '';
 
-  const fetchNotes = useCallback(async () => {
-    const { data } = await getActiveNotes(setLoading);
-    dispatch(setActiveNotes(data));
-  }, [dispatch]);
+  const threadsWithOwners = transformThreadsWithOwners(threads, users);
 
   useEffect(() => {
-    fetchNotes();
-  }, [fetchNotes]);
+    dispatch(asyncPopulateUsersAndThreads());
+  }, [dispatch]);
 
   return (
     <>
-      <div className="list-note">
+      <title>Home / XClone</title>
+      <meta name="description" content="Home Page" />
+      <div className="list-thread mb-10">
         {loading ? (
-          <>
-            <div className="wrap-loading">
-              <div className="loading" />
-            </div>
-          </>
-        ) : notes && notes.length > 0 ? (
-          notes.map((note) => (
-            <CardNote
-              key={note.id}
-              {...note}
-              createdAt={showFormattedDate(note.createdAt)}
+          <div className="wrap-loading">
+            <div className="loading" />
+          </div>
+        ) : threadsWithOwners && threadsWithOwners.length > 0 ? (
+          threadsWithOwners.map((thread) => (
+            <CardThread
+              key={thread.id}
+              {...thread}
+              upVote={asyncUpVoteThread(thread.id, userId)}
+              downVote={asyncDownVoteThread(thread.id, userId)}
+              neutralVote={asyncNeutralVoteThread(thread.id, userId)}
             />
           ))
         ) : (
           <div className="not-found">
-            {translatedNames[language]["Tidak Ditemukan"]}
+            {translatedNames[language]['Tidak Ditemukan']}
           </div>
         )}
       </div>

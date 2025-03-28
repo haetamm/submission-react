@@ -1,51 +1,70 @@
-export const validateTitle = (value) => {
-  if (value.trim() === "") {
-    return "Judul tidak boleh kosong";
-  } else if (value.length > 50) {
-    return "Judul maksimal 50 karakter";
-  }
-  return "";
-};
+import { z } from 'zod';
+import { stripHtml } from './helper';
 
-export const validateBody = (value) => {
-  if (value.trim() === "") {
-    return "Deskripsi tidak boleh kosong";
-  }
-  return "";
-};
+export const name = z
+  .string()
+  .trim()
+  .min(1, { message: 'Name must be at least 1 characters long' });
 
-export const validateName = (value) => {
-  if (value.trim() === "") {
-    return "Nama tidak boleh kosong";
-  }
-  return "";
-};
+export const email = z.string().email({ message: 'Invalid email address' });
 
-export const validateEmail = (value) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (value.trim() === "") {
-    return "Email tidak boleh kosong";
-  } else if (!emailRegex.test(value)) {
-    return "Email tidak valid";
-  }
-  return "";
-};
+export const passwordLogin = z.string().trim().min(1, 'Password is required');
 
-export const validatePassword = (value) => {
-  if (value.trim() === "") {
-    return "Password tidak boleh kosong";
-  } else if (value.length < 6) {
-    return "Password harus mengandung minimal 6 karakter";
-  }
-  return "";
-};
+export const password =  z
+  .string()
+  .trim()
+  .min(6, 'Minimum 6 characters')
+  .max(8, 'Maximum 8 characters')
+  .regex(
+    /^[a-zA-Z0-9]+$/,
+    'Password must contain only alphanumeric characters'
+  );
 
-export const validatePasswordConfirmation = (
-  password,
-  passwordConfirmation
-) => {
-  if (password !== passwordConfirmation) {
-    return "Password dan konfirmasi password harus sama";
-  }
-  return "";
-};
+export const title = z
+  .string()
+  .trim()
+  .min(1, { message: 'Title must be at least 1 characters long' });
+
+export const category = z
+  .string()
+  .trim()
+  .optional();
+
+export const body = z
+  .string()
+  .trim()
+  .min(1, { message: ' must be at least 1 characters' })
+  .refine(
+    (value) => {
+      const plainText = stripHtml(value);
+      return plainText.length > 0;
+    },
+    { message: ' cannot be empty or just whitespace' }
+  );
+
+export const registerSchema = z
+  .object({
+    name,
+    email,
+    password,
+    passwordConfirmation: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: 'Passwords do not match',
+    path: ['passwordConfirmation'],
+  });
+
+export const loginSchema = z.object({
+  email,
+  password: passwordLogin
+});
+
+export const threadSchema = z.object({
+  title,
+  category,
+  body
+});
+
+export const commentSchema = z.object({
+  content: body
+});

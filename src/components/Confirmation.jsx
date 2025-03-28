@@ -1,41 +1,26 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
-import { deleteNoteById } from "../store/notes";
-import { deleteNote } from "../utils/api";
-import { toast } from "sonner";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { asyncUnsetAuthUser } from '../stores/authUser/action';
 
-const Confirmation = ({ id, name, onClose }) => {
+const Confirmation = ({ name, onClose }) => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
 
   const handleButton = async () => {
-    if (id) {
-      const { data } = await deleteNote(id, setLoading);
-      if (data) {
-        dispatch(deleteNoteById(id));
-        onClose();
-        toast.success("Catatan berhasil dihapus");
-      }
-    } else {
-      localStorage.removeItem("accessToken");
-      dispatch({
-        type: "LOGOUT",
-      });
-    }
+    dispatch(asyncUnsetAuthUser());
+    onClose();
   };
 
   return (
     <>
       <button onClick={handleButton} className="cursor-pointer btn-delete">
-        {loading ? "Loading" : name}
+        {name}
       </button>
     </>
   );
 };
 
 Confirmation.propTypes = {
-  id: PropTypes.string,
   name: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };

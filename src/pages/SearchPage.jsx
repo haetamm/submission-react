@@ -1,81 +1,77 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { showFormattedDate } from "../utils";
-import CardNote from "../components/CardNote";
-import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import { AppContext } from "../contexts/AppContext";
-import { translatedNames } from "../utils/lang";
-import { setActiveNotes, setArchivedNotes } from "../store/notes";
-import { getActiveNotes, getArchivedNotes } from "../utils/api";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import { asyncPopulateUsersAndThreads } from '../stores/shared/action';
+import CardThread from '../components/CardThread';
+import { translatedNames } from '../utils/lang';
+import useLanguage from '../hooks/useLanguage';
+import { filterThreadByCategory, filterThreadByTitle, transformThreadsWithOwners } from '../utils/helper';
+import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
+import usePermission from '../hooks/usePermission';
 
 const SearchPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [notes, setNotes] = useState([]);
   const dispatch = useDispatch();
-  const { language } = useContext(AppContext);
+  const language = useLanguage();
   const [searchParams] = useSearchParams();
-  const notesActive = useSelector((state) => state.notes.notesActive || []);
-  const notesArchived = useSelector((state) => state.notes.notesArchived || []);
-  const titleQuery = searchParams.get("title") || "";
-
-  const fetchNotes = useCallback(async () => {
-    const { data, error } = await getActiveNotes(setLoading);
-    if (!error) {
-      dispatch(setActiveNotes(data));
-    }
-  }, [dispatch]);
-
-  const fetchArchivedNotes = useCallback(async () => {
-    const { data, error } = await getArchivedNotes(setLoading);
-    if (!error) {
-      dispatch(setArchivedNotes(data));
-    }
-  }, [dispatch]);
+  const { loading } = useSelector((state) => state.shared);
+  const { threads } = useSelector((state) => state.threads);
+  const { users } = useSelector((state) => state.users);
+  const [filteredThreads, setFilteredThreads] = useState([]);
+  const titleQuery = searchParams.get('title') || '';
+  const categoryQuery = searchParams.get('category') || '';
+  const { authUser } = usePermission();
+  const userId = authUser?.id || '';
 
   useEffect(() => {
-    if (titleQuery) {
-      setLoading(true);
-      fetchNotes();
-      fetchArchivedNotes();
+    if (!threads?.length || !users?.length) {
+      dispatch(asyncPopulateUsersAndThreads());
+      return;
     }
-    setLoading(false);
-  }, [dispatch, fetchArchivedNotes, fetchNotes, titleQuery]);
-
-  useEffect(() => {
+    const threadsWithOwners = transformThreadsWithOwners(threads, users);
+    let result = threadsWithOwners;
     if (titleQuery) {
-      setNotes([...notesActive, ...notesArchived]);
+      result = filterThreadByTitle(result, titleQuery);
     }
-  }, [notesActive, notesArchived, titleQuery]);
-
-  const filteredNotes = notes.filter((note) =>
-    note.title.toLowerCase().includes(titleQuery.toLowerCase())
-  );
+    if (categoryQuery) {
+      result = filterThreadByCategory(result, categoryQuery);
+    }
+    setFilteredThreads(result);
+  }, [dispatch, titleQuery, categoryQuery, threads, users]);
 
   return (
     <>
-      <div className="list-note">
+      <title>Search / XClone</title>
+      <meta name="description" content="Search Page" />
+      <div className="list-thread mb-10">
         {titleQuery && (
           <h3>
-            {translatedNames[language]["Hasil"]}: {titleQuery}
+            {translatedNames[language]['Hasil']} title: {titleQuery}
           </h3>
         )}
-        {!titleQuery ? (
-          <h3>{translatedNames[language]["Judul Pencarian"]}</h3>
+        {categoryQuery && !titleQuery && (
+          <h3>
+            {translatedNames[language]['Hasil']} category: {categoryQuery}
+          </h3>
+        )}
+        {!titleQuery && !categoryQuery ? (
+          <h3>{translatedNames[language]['Judul Pencarian']}</h3>
         ) : loading ? (
-          <div className="loading">
-            {translatedNames[language]["Memuat..."]}
+          <div className="wrap-loading">
+            <div className="loading" />
           </div>
-        ) : filteredNotes.length > 0 ? (
-          filteredNotes.map((note) => (
-            <CardNote
-              key={note.id}
-              {...note}
-              createdAt={showFormattedDate(note.createdAt)}
+        ) : filteredThreads.length > 0 ? (
+          filteredThreads.map((thread) => (
+            <CardThread
+              key={thread.id}
+              {...thread}
+              upVote={() => dispatch(asyncUpVoteThread(thread.id, userId))}
+              downVote={() => dispatch(asyncDownVoteThread(thread.id, userId))}
+              neutralVote={() => dispatch(asyncNeutralVoteThread(thread.id, userId))}
             />
           ))
         ) : (
           <div className="not-found">
-            {translatedNames[language]["Tidak Ditemukan"]}
+            {translatedNames[language]['Tidak Ditemukan']}
           </div>
         )}
       </div>

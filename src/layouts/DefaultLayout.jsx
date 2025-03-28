@@ -1,76 +1,51 @@
-import React, { useCallback, useEffect, useState } from "react";
-import SearchNote from "../components/SearchNote";
-import ButtonCreate from "../components/ButtonCreate";
-import Modal from "../components/Modal";
-import MobileNav from "../components/MobileNav";
-import { Navigate, Outlet } from "react-router-dom";
-import HeaderNote from "../components/HeaderNote";
-import { AppProvider } from "../contexts/AppProvider";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserLogged } from "../utils/api";
-import Loader from "../components/Loader";
-import SideBar from "../components/SideBar";
-import { Toaster } from "sonner";
+import React, {  } from 'react';
+import SearchThread from '../components/SearchThread';
+import ButtonCreate from '../components/ButtonCreate';
+import MobileNav from '../components/MobileNav';
+import { Outlet, useLocation } from 'react-router-dom';
+import HeaderPage from '../components/HeaderPage';
+import SideBar from '../components/SideBar';
+import { ToastContainer } from 'react-toastify';
+import { isActive } from '../utils/helper';
+import { urlPage } from '../utils/constans';
+import Loader from '../components/Loader';
+import usePreload from '../hooks/usePreload';
+import Modal from '../components/Modal';
 
 const DefaultLayout = () => {
-  const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(true);
-
-  const fetchUser = useCallback(async () => {
-    try {
-      const { data } = await getUserLogged();
-      if (data) {
-        dispatch({
-          type: "SET_USER",
-          payload: {
-            name: data.name,
-            img_url: `https://ui-avatars.com/api/?name=${data.name}&background=random`,
-          },
-        });
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (token) {
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
-  }, [fetchUser, token]);
+  const { pathname } = useLocation();
+  const changeStyle = !isActive(pathname, urlPage.LEADERBOARD);
+  const { loading } = usePreload();
 
   if (loading) {
     return <Loader />;
   }
 
-  if (!token) {
-    return <Navigate to={"/guest/login"} />;
-  }
-
   return (
     <>
-      <AppProvider>
-        <main className="container">
+      <Modal />
+      <main className="container">
+        <section className='section-sidebar'>
           <SideBar />
-          <section className="wrap-section">
-            <SearchNote />
-
-            <section className="section-list-note">
-              <HeaderNote />
-              <Outlet />
+        </section>
+        <section className="wrap-section">
+          {changeStyle && (
+            <section className="section-search">
+              <SearchThread />
             </section>
+          )}
+
+          <section className={`${changeStyle ? 'section-list-thread' : 'section-list-thread_leaderboard'}`}>
+            <HeaderPage changeStyle={changeStyle} />
+            <Outlet />
           </section>
-        </main>
-        <div className="wrap-button-create">
-          <ButtonCreate />
-        </div>
-        <MobileNav />
-        <Modal />
-      </AppProvider>
-      <Toaster className="text-lg" position="top-right" />
+        </section>
+      </main>
+      <div className="wrap-button-create">
+        <ButtonCreate />
+      </div>
+      <MobileNav />
+      <ToastContainer />
     </>
   );
 };

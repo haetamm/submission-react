@@ -1,60 +1,61 @@
-import React, { useContext, useState } from "react";
-import InputCustom from "./InputCustom";
-import useInput from "../hooks/useInput";
-import { translatedNames } from "../utils/lang";
-import { AppContext } from "../contexts/AppContext";
-import { login } from "../utils/api";
+import React from 'react';
+import InputCustom from './InputCustom';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema } from '../utils/validation';
+import { loginFields } from '../utils/fields';
+import { useDispatch, useSelector } from 'react-redux';
+import { asyncSetAuthUser } from '../stores/authUser/action';
+import { useNavigate } from 'react-router-dom';
+import { translatedNames } from '../utils/lang';
+import useLanguage from '../hooks/useLanguage';
 
 const FormLogin = () => {
-  const { language } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
-
+  const language = useLanguage();
+  const loading = useSelector((state) => state.authUser.loading);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
-    value: email,
-    handleChange: handleEmailChange,
-    error: emailError,
-  } = useInput("email");
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const {
-    value: password,
-    handleChange: handlePasswordChange,
-    error: passwordError,
-  } = useInput("password");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!emailError || !passwordError) {
-      const { error } = await login({ email, password }, setLoading);
-      if (!error) {
-        window.location.assign("/");
-      }
-    }
+  const onSubmit = (data) => {
+    dispatch(asyncSetAuthUser(data, navigate));
   };
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <InputCustom
-          type="email"
-          name="email"
-          value={email}
-          handleChange={handleEmailChange}
-          error={emailError}
-        />
-
-        <InputCustom
-          type="password"
-          name="password"
-          value={password}
-          handleChange={handlePasswordChange}
-          error={passwordError}
-        />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {loginFields.map(({ name, type }) => (
+          <Controller
+            key={name}
+            name={name}
+            control={control}
+            render={({ field }) => (
+              <InputCustom
+                type={type}
+                label={translatedNames[language][name]}
+                {...field}
+                error={errors[name]?.message}
+              />
+            )}
+          />
+        ))}
 
         <button
-          disabled={!email || !password}
           className="button create-account"
+          disabled={!isValid || isSubmitting || loading}
         >
-          {loading ? "Loading" : translatedNames[language]["buttonLog"]}
+          {loading ? 'Loading' : translatedNames[language]['buttonLog']}
         </button>
       </form>
     </>

@@ -1,44 +1,64 @@
-import React, { useCallback, useEffect, useState } from "react";
-import CardNote from "../components/CardNote";
-import { showFormattedDate } from "../utils";
-import { useParams } from "react-router-dom";
-import { getNote } from "../utils/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setNoteById } from "../store/notes";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { asyncReceiveThreadDetail } from '../stores/threadDetail/action';
+import { useParams } from 'react-router-dom';
+import CardThread from '../components/CardThread';
+import { translatedNames } from '../utils/lang';
+import useLanguage from '../hooks/useLanguage';
+import usePermission from '../hooks/usePermission';
+import FormReply from '../components/FormReply';
+import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
+import { asyncDownVoteComment, asyncNeutralVoteComment, asyncUpVoteComment } from '../stores/comment/action';
 
 const DetailPage = () => {
+  const language = useLanguage();
   const { id } = useParams();
+  const { threadDetail, loading } = useSelector((state) => state.threadDetail);
+  const comments = useSelector((state) => state.comments);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
-  const note = useSelector((state) => state.notes.noteById);
-
-  const fetchNote = useCallback(async () => {
-    const { data } = await getNote(id, setLoading);
-    dispatch(setNoteById(data));
-  }, [dispatch, id]);
+  const { isAuthenticated, authUser } = usePermission();
+  const userId = authUser?.id || '';
 
   useEffect(() => {
-    if (id) {
-      fetchNote();
-    }
-  }, [fetchNote, id]);
+    dispatch(asyncReceiveThreadDetail(id));
+  }, [dispatch, id]);
 
   return (
     <>
-      <div className="list-note">
+      <title>Thread Detail / XClone</title>
+      <meta name="description" content="Detail Page" />
+      <div className="list-thread mb-10">
         {loading ? (
           <div className="wrap-loading">
             <div className="loading" />
           </div>
-        ) : note ? (
-          note.id ? (
-            <CardNote {...note} createdAt={showFormattedDate(note.createdAt)} />
-          ) : (
-            <div className="not-found">Invalid Note Data</div>
-          )
-        ) : (
-          <div className="not-found">Not Found</div>
-        )}
+        ) : threadDetail ? (
+          <>
+            <CardThread
+              {...threadDetail}
+              upVote={asyncUpVoteThread(threadDetail.id, userId)}
+              downVote={asyncDownVoteThread(threadDetail.id, userId)}
+              neutralVote={asyncNeutralVoteThread(threadDetail.id, userId)}
+            />
+            {isAuthenticated && <FormReply  {...threadDetail} />}
+            {comments.length ?
+              comments.map((comment) => (
+                <CardThread
+                  key={comment.id}
+                  {...comment}
+                  upVote={asyncUpVoteComment(threadDetail.id, comment.id, userId)}
+                  downVote={asyncDownVoteComment(threadDetail.id, comment.id, userId)}
+                  neutralVote={asyncNeutralVoteComment(threadDetail.id, comment.id, userId)}
+                />
+              )) : (
+                null
+              )
+            }
+          </>
+        )
+          : (
+            <div className="not-found">{translatedNames[language]['Tidak Ditemukan']}</div>
+          )}
       </div>
     </>
   );
