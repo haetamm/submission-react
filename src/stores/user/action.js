@@ -29,7 +29,7 @@ const asyncRegisterUser = ({ name, email, password }, navigate) => {
     try {
       await api.register({ name, email, password });
       navigate(urlPage.LOGIN);
-      toast.success(`selamat ${name}, silahkan login`)
+      toast.success(`selamat ${name}, silahkan login`);
     } catch (error) {
       toast.error(error.message);
     } finally {

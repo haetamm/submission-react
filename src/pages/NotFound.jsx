@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NotfoundPage = () => {
+const NotFoundPage = () => {
   return (
     <>
       <title>NotFound / XClone</title>
@@ -12,4 +12,4 @@ const NotfoundPage = () => {
   );
 };
 
-export default NotfoundPage;
+export default NotFoundPage;

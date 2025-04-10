@@ -8,6 +8,7 @@ import useLanguage from '../hooks/useLanguage';
 import { filterThreadByCategory, filterThreadByTitle, transformThreadsWithOwners } from '../utils/helper';
 import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
 import usePermission from '../hooks/usePermission';
+import CategoryList from '../components/CategoryList';
 
 const SearchPage = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const SearchPage = () => {
   const { loading } = useSelector((state) => state.shared);
   const { threads } = useSelector((state) => state.threads);
   const { users } = useSelector((state) => state.users);
+  const [categories, setCategories] = useState([]);
   const [filteredThreads, setFilteredThreads] = useState([]);
   const titleQuery = searchParams.get('title') || '';
   const categoryQuery = searchParams.get('category') || '';
@@ -27,6 +29,9 @@ const SearchPage = () => {
       dispatch(asyncPopulateUsersAndThreads());
       return;
     }
+    const uniqueCategories = [...new Set(threads.map((thread) => thread.category))];
+    setCategories(uniqueCategories);
+
     const threadsWithOwners = transformThreadsWithOwners(threads, users);
     let result = threadsWithOwners;
     if (titleQuery) {
@@ -54,7 +59,12 @@ const SearchPage = () => {
           </h3>
         )}
         {!titleQuery && !categoryQuery ? (
-          <h3>{translatedNames[language]['Judul Pencarian']}</h3>
+          <CategoryList
+            translatedNames={translatedNames}
+            language={language}
+            categories={categories}
+            threads={threads}
+          />
         ) : loading ? (
           <div className="wrap-loading">
             <div className="loading" />

@@ -7,7 +7,7 @@ import DetailPage from './pages/DetailPage';
 import GuestLayout from './layouts/GuestLayout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import NotFound from './pages/NotFound';
+import NotFoundPage from './pages/NotFound';
 import LeaderBoardPage from './pages/LeaderBoardPage';
 
 const routerConfig = [
@@ -57,7 +57,7 @@ const routerConfig = [
   },
   {
     path: '*',
-    element: <NotFound />,
+    element: <NotFoundPage />,
     handle: { name: 'Tidak Ditemukan' },
   },
 ];

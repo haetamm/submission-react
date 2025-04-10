@@ -6,8 +6,7 @@ import { showFormattedDate } from '../utils/helper';
 import '../styles/card-thread.css';
 import { FaCommentDots } from 'react-icons/fa';
 import { urlPage } from '../utils/constans';
-import ButtonDislike from './ButtonDislike';
-import ButtonLike from './ButtonLike';
+import ButtonVote from './ButtonVote';
 
 const CardThread = ({
   id, category, owner, title, createdAt, body, upVotesBy, downVotesBy, totalComments, comments, content, upVote, downVote, neutralVote
@@ -56,18 +55,20 @@ const CardThread = ({
         <div
           className={`${showButtonComment() ? 'flex justify-beetween' : 'inline'} thread-actions `}>
           <div className="wrap-icon-button" >
-            <ButtonDislike
-              id={id}
-              dislikes={downVotesBy}
+            <ButtonVote
+              votes={downVotesBy}
+              type="dislike"
               downVote={downVote}
               neutralVote={neutralVote}
             />
-            <ButtonLike
-              id={id}
-              likes={upVotesBy}
+
+            <ButtonVote
+              votes={upVotesBy}
+              type="like"
               upVote={upVote}
               neutralVote={neutralVote}
             />
+
           </div>
           {showButtonComment() && (
             <Link to={`${urlPage.THREAD}/${id}`} className="wrap-icon">

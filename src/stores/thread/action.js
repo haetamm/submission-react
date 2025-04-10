@@ -74,10 +74,7 @@ const asyncUpVoteThread = (threadId, userId) => {
       await api.upVoteThread(threadId);
     } catch (error) {
       // Rollback kedua state
-      dispatch({
-        type: ActionType.RECEIVE_THREADS,
-        payload: { threads: previousThreads },
-      });
+      dispatch(receiveThreadsActionCreator(previousThreads));
       if (previousThreadDetail && previousThreadDetail.id === threadId) {
         dispatch(receiveThreadDetailActionCreator(previousThreadDetail));
       }
@@ -103,10 +100,7 @@ const asyncDownVoteThread = (threadId, userId) => {
     try {
       await api.downVoteThread(threadId);
     } catch (error) {
-      dispatch({
-        type: ActionType.RECEIVE_THREADS,
-        payload: { threads: previousThreads },
-      });
+      dispatch(receiveThreadsActionCreator(previousThreads));
       if (previousThreadDetail && previousThreadDetail.id === threadId) {
         dispatch(receiveThreadDetailActionCreator(previousThreadDetail));
       }
@@ -132,10 +126,7 @@ const asyncNeutralVoteThread = (threadId, userId) => {
     try {
       await api.neutralVoteThread(threadId);
     } catch (error) {
-      dispatch({
-        type: ActionType.RECEIVE_THREADS,
-        payload: { threads: previousThreads },
-      });
+      dispatch(receiveThreadsActionCreator(previousThreads));
       if (previousThreadDetail && previousThreadDetail.id === threadId) {
         dispatch(receiveThreadDetailActionCreator(previousThreadDetail));
       }
