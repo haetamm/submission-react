@@ -1,3 +1,3 @@
 # React + Vite
 
-## Preview [disini](https://xclonee.vercel.app)
+## Preview [disini](https://xclonee.vercel.app/)
