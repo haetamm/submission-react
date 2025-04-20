@@ -7,21 +7,17 @@ import { registerFields } from '../utils/fields';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncRegisterUser } from '../stores/user/action';
 import { useNavigate } from 'react-router-dom';
-import useLanguage from '../hooks/useLanguage';
-import { translatedNames } from '../utils/lang';
 
 const FormRegister = () => {
-  const language = useLanguage();
   const navigate = useNavigate();
   const loading = useSelector((state) => state.users.loading);
   const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
-    mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
@@ -36,8 +32,8 @@ const FormRegister = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {registerFields.map(({ name, type }) => (
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {registerFields.map(({ name, type, label }) => (
           <Controller
             key={name}
             name={name}
@@ -45,7 +41,7 @@ const FormRegister = () => {
             render={({ field }) => (
               <InputCustom
                 type={type}
-                label={translatedNames[language][name]}
+                label={label}
                 {...field}
                 error={errors[name]?.message}
               />
@@ -55,9 +51,9 @@ const FormRegister = () => {
 
         <button
           className="button create-account"
-          disabled={!isValid || isSubmitting || loading}
+          disabled={loading}
         >
-          {loading ? 'Loading' : translatedNames[language]['buttonReg']}
+          {loading ? 'Loading' : 'Create Account'}
         </button>
       </form>
     </>

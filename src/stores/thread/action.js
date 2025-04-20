@@ -79,6 +79,7 @@ const asyncUpVoteThread = (threadId, userId) => {
         dispatch(receiveThreadDetailActionCreator(previousThreadDetail));
       }
       toast.error(error.message);
+
     }
   };
 };

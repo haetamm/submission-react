@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import api from '../../utils/api';
 import { urlPage } from '../../utils/constans';
+import { closeModal } from '../modal/action';
 
 const ActionType = {
   SET_AUTH_USER: 'SET_AUTH_USER',
@@ -54,6 +55,7 @@ const asyncSetAuthUser = ({ email, password }, navigate) => {
 const asyncUnsetAuthUser = () => {
   return (dispatch) => {
     dispatch(unsetAuthUserActionCreator());
+    dispatch(closeModal());
     api.removeAccessToken();
   };
 };
@@ -64,4 +66,5 @@ export {
   unsetAuthUserActionCreator,
   asyncSetAuthUser,
   asyncUnsetAuthUser,
+  setLoading
 };

@@ -15,11 +15,11 @@ const setLoading = (loading) => {
   };
 };
 
-const receiveLeaderboardActionCreator = (leaderboard) => {
+const receiveLeaderboardActionCreator = (leaderboards) => {
   return {
     type: ActionType.RECEIVE_LEADERBOARD,
     payload: {
-      leaderboard,
+      leaderboards,
     },
   };
 };

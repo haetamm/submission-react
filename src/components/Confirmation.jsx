@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { asyncUnsetAuthUser } from '../stores/authUser/action';
 
-const Confirmation = ({ name, onClose }) => {
+const Confirmation = ({ name }) => {
   const dispatch = useDispatch();
 
   const handleButton = async () => {
     dispatch(asyncUnsetAuthUser());
-    onClose();
   };
 
   return (
@@ -22,7 +21,6 @@ const Confirmation = ({ name, onClose }) => {
 
 Confirmation.propTypes = {
   name: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default Confirmation;

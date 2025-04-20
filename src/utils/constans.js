@@ -6,3 +6,8 @@ export const urlPage = {
   LOGIN: '/guest/login',
   REGISTER: '/guest/register',
 };
+
+export const typeModal = {
+  ADD: 'add',
+  LOGOUT: 'logout'
+};

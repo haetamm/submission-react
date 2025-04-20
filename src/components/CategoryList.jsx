@@ -1,18 +1,15 @@
 import React from 'react';
-import useLanguage from '../hooks/useLanguage';
 import PropTypes from 'prop-types';
 import '../styles/category.css';
-import { translatedNames } from '../utils/lang';
 import { Link } from 'react-router-dom';
 import { urlPage } from '../utils/constans';
 
 const CategoryList = ({ categories, threads }) => {
-  const language = useLanguage();
 
   return (
     <>
-      <h3>{translatedNames[language]['Judul Pencarian']}</h3>
-      <div className="trending-categories">
+      <h3>Enter a title in the search input to find thread.</h3>
+      <div data-testid="trending-categories" className="trending-categories">
         {categories.map((category) => (
           <div key={category} className="trending-item">
             <div className="trending-title">

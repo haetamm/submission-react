@@ -6,7 +6,7 @@ const DEFAULT_STATE = {
   id: null,
 };
 
-export const modalReducer = (state = DEFAULT_STATE, action) => {
+export const modalReducer = (state = DEFAULT_STATE, action = {}) => {
   switch (action.type) {
   case ActionType.OPEN_MODAL:
     return {

@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import SearchThread from '../components/SearchThread';
 import ButtonCreate from '../components/ButtonCreate';
 import MobileNav from '../components/MobileNav';

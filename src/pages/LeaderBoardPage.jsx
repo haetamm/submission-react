@@ -2,13 +2,11 @@ import React, { useEffect } from 'react';
 import '../styles/leaderboard.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncReceiveLeaderboard } from '../stores/leaderboard/action';
-import { translatedNames } from '../utils/lang';
-import useLanguage from '../hooks/useLanguage';
+import LeaderboardItem from '../components/LeaderboardItem';
 
 const LeaderBoardPage = () => {
-  const language = useLanguage();
   const dispatch = useDispatch();
-  const { loading, leaderboard } = useSelector((state) => state.leaderboard);
+  const { loading, leaderboards } = useSelector((state) => state.leaderboards);
 
   useEffect(() => {
     dispatch(asyncReceiveLeaderboard());
@@ -16,12 +14,12 @@ const LeaderBoardPage = () => {
 
   return (
     <>
-      <title>Leadeerboard / XClone</title>
+      <title>Leaderboard / XClone</title>
       <meta name="description" content="Leaderboard Page" />
       <div className="leaderboard-container">
         <div className="leaderboard-header">
           <div className="crown-left"></div>
-          <h1>{translatedNames[language]['Leaderboard']}</h1>
+          <h1>Leaderboard</h1>
           <div className="crown-right"></div>
         </div>
         <div className="leaderboard-list">
@@ -29,26 +27,19 @@ const LeaderBoardPage = () => {
             <div className="wrap-loading">
               <div className="loading" />
             </div>
-          ) : leaderboard && leaderboard.length > 0 ? (
-            leaderboard.map(({ score, user }, index) => (
-              <div
-                key={index}
-                className={`leaderboard-row ${index === 0 ? 'first-place' : ''}`}
-              >
-                <div className="rank">
-                  <span className="rank-circle">
-                    {(index + 1).toString().padStart(2, '0')}
-                  </span>
-                </div>
-                <div className="player-info">
-                  <img src={user.avatar} alt={user.name} className="player-icon" />
-                  <span className="player-name">{user.name}</span>
-                </div>
-                <div className="score">{score}</div>
-              </div>
+          ) : leaderboards && leaderboards.length > 0 ? (
+            leaderboards.map(({ score, user }, index) => (
+              <LeaderboardItem
+                key={user.id}
+                rank={index + 1}
+                user={user}
+                score={score}
+                isFirstPlace={index === 0}
+                gradientType={index === 0 ? 'first' : 'default'}
+              />
             ))
           ) : (
-            <div className="not-found">{translatedNames[language]['Tidak Ditemukan']}</div>
+            <div className="not-found">Not Found</div>
           )}
         </div>
       </div>

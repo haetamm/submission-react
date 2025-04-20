@@ -1,25 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AvatarUser = ({ img }) => {
+const AvatarUser = ({ img, size = '40px', borderRadius = '100%' }) => {
   return (
     <>
       <img
-        src={`${
-          img
-            ? img
-            : 'https://pbs.twimg.com/profile_images/1269621458822664192/NHV_D34w_400x400.jpg'
-        }`}
+        data-testid="avatar"
+        src={img || 'https://pbs.twimg.com/profile_images/1269621458822664192/NHV_D34w_400x400.jpg'}
         alt="AvatarUser"
-        height={40}
-        className='rounded-full'
+        style={{
+          width: size,
+          height: size,
+          borderRadius,
+          objectFit: 'cover',
+        }}
       />
     </>
   );
 };
 
 AvatarUser.propTypes = {
-  img: PropTypes.string.isRequired,
+  img: PropTypes.string,
+  size: PropTypes.string,
+  borderRadius: PropTypes.string,
 };
 
 export default AvatarUser;

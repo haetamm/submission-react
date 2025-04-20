@@ -4,14 +4,12 @@ import '../styles/modal.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../stores/modal/action';
 import Confirmation from './Confirmation';
-import useLanguage from '../hooks/useLanguage';
-import { translatedNames } from '../utils/lang';
 import FormThread from './FormThread';
+import { typeModal } from '../utils/constans';
 
 const Modal = () => {
   const dispatch = useDispatch();
   const { isOpen, type } = useSelector((state) => state.modal);
-  const language = useLanguage();
 
   return (
     <>
@@ -20,13 +18,14 @@ const Modal = () => {
           <div className="modal-content">
             <div
               className={`modal-card ${
-                type === 'add' ? 'besar-modal' : 'kecil-modal'
+                type === typeModal.ADD ? 'besar-modal' : 'kecil-modal'
               }`}
             >
               <div className="modal-card-kecil__body">
                 <div className="close-wrap">
-                  <h3>{translatedNames[language][type]}</h3>
+                  <h3 data-testid="title-modal">{ type === typeModal.ADD ? 'Create Thread' : 'Logout' }</h3>
                   <MdClose
+                    data-testid="close-modal"
                     className="icon cursor-pointer"
                     onClick={() => {
                       dispatch(closeModal());
@@ -34,11 +33,10 @@ const Modal = () => {
                   />
                 </div>
                 <div className="besar-modal__wrap">
-                  {type === 'add' && <FormThread />}
-                  {type !== 'add' && (
+                  {type === typeModal.ADD && <FormThread />}
+                  {type === typeModal.LOGOUT && (
                     <Confirmation
-                      name={translatedNames[language][type]}
-                      onClose={() => dispatch(closeModal())}
+                      name='Logout'
                     />
                   )}
                 </div>

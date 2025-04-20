@@ -18,12 +18,12 @@ const routerConfig = [
       {
         path: '/',
         element: <HomePage />,
-        handle: { name: 'Beranda' },
+        handle: { name: 'Home' },
       },
       {
         path: '/search',
         element: <SearchPage />,
-        handle: { name: 'Pencarian' },
+        handle: { name: 'Search' },
       },
       {
         path: '/leaderboard',

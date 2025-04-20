@@ -5,12 +5,12 @@ import { BsDoorOpenFill } from 'react-icons/bs';
 
 export const navItems = [
   {
-    name: 'Beranda',
+    name: 'Home',
     route: urlPage.HOME,
     icon: IoHome,
   },
   {
-    name: 'Pencarian',
+    name: 'Search',
     route: urlPage.SEARCH,
     icon: FaSearch,
   },

@@ -4,9 +4,6 @@ import { AppContext } from './AppContext';
 
 export const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'ligth');
-  const [language, setLanguage] = useState(
-    localStorage.getItem('language') || 'id'
-  );
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -19,20 +16,12 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('theme', newTheme);
   }, [theme]);
 
-  const toggleLanguage = useCallback(() => {
-    const newLanguage = language === 'id' ? 'en' : 'id';
-    setLanguage(newLanguage);
-    localStorage.setItem('language', newLanguage);
-  }, [language]);
-
   const contextValue = useMemo(
     () => ({
       theme,
       toggleTheme,
-      language,
-      toggleLanguage,
     }),
-    [theme, language, toggleLanguage, toggleTheme]
+    [theme, toggleTheme]
   );
 
   return (

@@ -1,3 +1,9 @@
+.wrap-logo,
+.wrap-sidebar {
+  display: flex;
+  justify-content: center;
+}
+
 .logo {
   display: flex;
   justify-content: center;

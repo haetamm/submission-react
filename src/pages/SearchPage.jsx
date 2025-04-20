@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { asyncPopulateUsersAndThreads } from '../stores/shared/action';
 import CardThread from '../components/CardThread';
-import { translatedNames } from '../utils/lang';
-import useLanguage from '../hooks/useLanguage';
 import { filterThreadByCategory, filterThreadByTitle, transformThreadsWithOwners } from '../utils/helper';
 import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
 import usePermission from '../hooks/usePermission';
@@ -12,7 +10,6 @@ import CategoryList from '../components/CategoryList';
 
 const SearchPage = () => {
   const dispatch = useDispatch();
-  const language = useLanguage();
   const [searchParams] = useSearchParams();
   const { loading } = useSelector((state) => state.shared);
   const { threads } = useSelector((state) => state.threads);
@@ -50,18 +47,16 @@ const SearchPage = () => {
       <div className="list-thread mb-10">
         {titleQuery && (
           <h3>
-            {translatedNames[language]['Hasil']} title: {titleQuery}
+            Thread by title: {titleQuery}
           </h3>
         )}
         {categoryQuery && !titleQuery && (
           <h3>
-            {translatedNames[language]['Hasil']} category: {categoryQuery}
+            Thread by category: {categoryQuery}
           </h3>
         )}
         {!titleQuery && !categoryQuery ? (
           <CategoryList
-            translatedNames={translatedNames}
-            language={language}
             categories={categories}
             threads={threads}
           />
@@ -81,7 +76,7 @@ const SearchPage = () => {
           ))
         ) : (
           <div className="not-found">
-            {translatedNames[language]['Tidak Ditemukan']}
+            Not Found
           </div>
         )}
       </div>

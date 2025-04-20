@@ -11,7 +11,7 @@ const LoginPage = () => {
       <FormLogin />
       <p className="small-text">
         Don&apos;t have an account?{' '}
-        <Link to={urlPage.REGISTER} className="link">
+        <Link to={urlPage.REGISTER} data-testid="register-link" className="link">
           Sign up
         </Link>
       </p>

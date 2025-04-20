@@ -24,7 +24,7 @@ const CardThread = ({
             <AvatarUser img={owner.avatar} />
             <div className="user-info">
               <div className="name">
-                <span>{owner.name}</span>
+                <span data-testid="owner-name">{owner.name}</span>
               </div>
               <span className="handle">{showFormattedDate(createdAt)}</span>
             </div>
@@ -33,11 +33,12 @@ const CardThread = ({
         <div className="wrap-thread-content">
           <div className="thread-content">
             {title &&
-            <Link to={`${urlPage.THREAD}/${id}`} className="thread-title">
+            <Link data-testid="title-thread" to={`${urlPage.THREAD}/${id}`} className="thread-title">
               {title}
             </Link>
             }
             <div
+              data-testid={body ? 'body-thread' : 'body-comment' }
               className=" thread-body"
               dangerouslySetInnerHTML={{
                 __html: body || content,
@@ -45,7 +46,7 @@ const CardThread = ({
             />
             {category &&
               <div className='thread-category'>
-                <Link to={`${urlPage.SEARCH}?category=${encodeURIComponent(category)}`} className='thread-category'>
+                <Link data-testid="category-thread" to={`${urlPage.SEARCH}?category=${encodeURIComponent(category)}`} className='thread-category'>
                 #{category}
                 </Link>
               </div>

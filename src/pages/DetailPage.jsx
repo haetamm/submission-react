@@ -3,15 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { asyncReceiveThreadDetail } from '../stores/threadDetail/action';
 import { useParams } from 'react-router-dom';
 import CardThread from '../components/CardThread';
-import { translatedNames } from '../utils/lang';
-import useLanguage from '../hooks/useLanguage';
 import usePermission from '../hooks/usePermission';
-import FormReply from '../components/FormReply';
+import FormComment from '../components/FormComment';
 import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
 import { asyncDownVoteComment, asyncNeutralVoteComment, asyncUpVoteComment } from '../stores/comment/action';
 
 const DetailPage = () => {
-  const language = useLanguage();
   const { id } = useParams();
   const { threadDetail, loading } = useSelector((state) => state.threadDetail);
   const comments = useSelector((state) => state.comments);
@@ -28,7 +25,7 @@ const DetailPage = () => {
       <title>Thread Detail / XClone</title>
       <meta name="description" content="Detail Page" />
       <div className="list-thread mb-10">
-        {loading ? (
+        { loading ? (
           <div className="wrap-loading">
             <div className="loading" />
           </div>
@@ -40,7 +37,7 @@ const DetailPage = () => {
               downVote={asyncDownVoteThread(threadDetail.id, userId)}
               neutralVote={asyncNeutralVoteThread(threadDetail.id, userId)}
             />
-            {isAuthenticated && <FormReply  {...threadDetail} />}
+            {isAuthenticated && <FormComment  {...threadDetail} />}
             {comments.length ?
               comments.map((comment) => (
                 <CardThread
@@ -57,7 +54,7 @@ const DetailPage = () => {
           </>
         )
           : (
-            <div className="not-found">{translatedNames[language]['Tidak Ditemukan']}</div>
+            <div className="not-found">Not Found</div>
           )}
       </div>
     </>

@@ -26,8 +26,9 @@ const ButtonVote = ({
   const Icon = type === 'like' ? AiFillLike : AiFillDislike;
 
   return (
-    <div className="wrap-icon">
+    <div className="wrap-icon" >
       <Icon
+        data-testid={type}
         onClick={handleClick}
         className={`${isVoted ? 'active' : ''} icon cursor-pointer`}
       />

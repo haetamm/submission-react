@@ -3,14 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { transformThreadsWithOwners } from '../utils/helper';
 import CardThread from '../components/CardThread';
 import { asyncPopulateUsersAndThreads } from '../stores/shared/action';
-import useLanguage from '../hooks/useLanguage';
-import { translatedNames } from '../utils/lang';
 import { asyncDownVoteThread, asyncNeutralVoteThread, asyncUpVoteThread } from '../stores/thread/action';
 import usePermission from '../hooks/usePermission';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const language = useLanguage();
   const { loading } = useSelector((state) => state.shared);
   const { threads } = useSelector((state) => state.threads);
   const { users } = useSelector((state) => state.users);
@@ -44,7 +41,7 @@ const HomePage = () => {
           ))
         ) : (
           <div className="not-found">
-            {translatedNames[language]['Tidak Ditemukan']}
+            Not Found
           </div>
         )}
       </div>

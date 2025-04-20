@@ -18,7 +18,7 @@ const store = configureStore({
     comments: commentReducer,
     shared: sharedReducer,
     threadDetail: threadDetailReducer,
-    leaderboard: leaderboardReducer,
+    leaderboards: leaderboardReducer,
     modal: modalReducer
   }
 });

@@ -4,7 +4,7 @@ import '../styles/mobile-nav.css';
 import { navItems } from '../utils/link';
 import { isActive } from '../utils/helper';
 import usePermission from '../hooks/usePermission';
-import { urlPage } from '../utils/constans';
+import { typeModal, urlPage } from '../utils/constans';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../stores/modal/action';
 
@@ -21,7 +21,7 @@ const MobileNav = () => {
 
   const handleLogoutClick = (item) => {
     if (item.name === 'Logout' && isAuthenticated) {
-      dispatch(openModal('logout'));
+      dispatch(openModal(typeModal.LOGOUT));
     }
   };
 

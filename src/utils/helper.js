@@ -5,16 +5,14 @@ const showFormattedDate = (date) => {
     month: 'long',
     day: 'numeric',
   };
-  return new Date(date).toLocaleDateString('id-ID', options);
+  return new Date(date).toLocaleDateString('en-EN', options);
 };
 
 const isActive = (currentPrefix, targetPrefix) => {
   return currentPrefix === targetPrefix;
 };
 
-const isPage = (currentPrefix, targetPrefix) => {
-  return currentPrefix.startsWith(targetPrefix);
-};
+
 const stripHtml = (html) => {
   return html.replace(/<[^>]*>/g, '').trim();
 };
@@ -40,11 +38,9 @@ const filterThreadByTitle = (thread, title) => {
 };
 
 const filterThreadByCategory = (threads, category) => {
-  const normalizedCategory = category.toLowerCase();
   return threads.filter(
     (thread) =>
-      thread.category &&
-      thread.category.toLowerCase() === normalizedCategory
+      thread.category === category
   );
 };
 
@@ -89,7 +85,6 @@ export {
   isActive,
   stripHtml,
   transformThreadsWithOwners,
-  isPage,
   handleTextareaChange,
   filterThreadByTitle,
   updateVotes,

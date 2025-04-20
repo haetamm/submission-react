@@ -7,21 +7,17 @@ import { loginFields } from '../utils/fields';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncSetAuthUser } from '../stores/authUser/action';
 import { useNavigate } from 'react-router-dom';
-import { translatedNames } from '../utils/lang';
-import useLanguage from '../hooks/useLanguage';
 
 const FormLogin = () => {
-  const language = useLanguage();
   const loading = useSelector((state) => state.authUser.loading);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    mode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
@@ -34,8 +30,8 @@ const FormLogin = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {loginFields.map(({ name, type }) => (
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {loginFields.map(({ name, type, label }) => (
           <Controller
             key={name}
             name={name}
@@ -43,7 +39,7 @@ const FormLogin = () => {
             render={({ field }) => (
               <InputCustom
                 type={type}
-                label={translatedNames[language][name]}
+                label={label}
                 {...field}
                 error={errors[name]?.message}
               />
@@ -53,9 +49,9 @@ const FormLogin = () => {
 
         <button
           className="button create-account"
-          disabled={!isValid || isSubmitting || loading}
+          disabled={loading}
         >
-          {loading ? 'Loading' : translatedNames[language]['buttonLog']}
+          {loading ? 'Loading' : 'Login'}
         </button>
       </form>
     </>

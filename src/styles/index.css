@@ -5,6 +5,15 @@
   font-style: normal;
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 :root {
   --color: #14171a;
   --background-color: #ffff;
@@ -141,12 +150,6 @@ main {
   width: 100%;
   padding: 0px 10px 10px 10px;
   height: 100%;
-}
-
-.wrap-logo,
-.wrap-sidebar {
-  display: flex;
-  justify-content: center;
 }
 
 .section-sidebar h2,

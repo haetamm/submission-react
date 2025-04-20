@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import api from '../../utils/api';
 import { setAuthUserActionCreator } from '../authUser/action';
 
@@ -27,7 +28,7 @@ const asyncPreloadProcess = (setLoading) => {
       const authUser = await api.getOwnProfile();
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error) {
-      console.error('Preload error:', error.message);
+      toast.error(error.message);
       dispatch(setAuthUserActionCreator(null));
     } finally {
       dispatch(setIsPreloadActionCreator(false));

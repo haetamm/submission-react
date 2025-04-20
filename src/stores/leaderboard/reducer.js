@@ -2,10 +2,10 @@ import { ActionType } from './action';
 
 const initialState = {
   loading: false,
-  leaderboard: null,
+  leaderboards: [],
 };
 
-const leaderboardReducer = (state = initialState, action) => {
+const leaderboardReducer = (state = initialState, action = {}) => {
   switch (action.type) {
   case ActionType.SET_LOADING:
     return {
@@ -15,12 +15,12 @@ const leaderboardReducer = (state = initialState, action) => {
   case ActionType.RECEIVE_LEADERBOARD:
     return {
       ...state,
-      leaderboard: action.payload.leaderboard,
+      leaderboards: action.payload.leaderboards,
     };
   case ActionType.CLEAR_LEADERBOARD:
     return {
       ...state,
-      leaderboard: null,
+      leaderboards: [],
     };
   default:
     return state;

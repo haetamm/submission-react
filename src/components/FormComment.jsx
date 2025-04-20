@@ -6,12 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { commentSchema } from '../utils/validation';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncAddComment } from '../stores/comment/action';
-import { translatedNames } from '../utils/lang';
-import useLanguage from '../hooks/useLanguage';
 import { handleTextareaChange } from '../utils/helper';
 
-const FormReply = ({ id, owner }) => {
-  const language = useLanguage();
+const FormComment = ({ id, owner }) => {
   const { authUser } = useSelector((state) => state.authUser);
   const textareaRef = useRef(null);
   const dispatch = useDispatch();
@@ -21,10 +18,9 @@ const FormReply = ({ id, owner }) => {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(commentSchema),
-    mode: 'onChange',
     defaultValues: {
       content: '',
     },
@@ -44,7 +40,7 @@ const FormReply = ({ id, owner }) => {
     <div className="reply-section">
       <div className="reply-header">
         <span>
-          {translatedNames[language]['descRep']} <span>{owner?.name}</span>
+          Replying to <span>{owner?.name}</span>
         </span>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,8 +57,9 @@ const FormReply = ({ id, owner }) => {
                     field.ref(e);
                     textareaRef.current = e;
                   }}
+                  data-testid="content"
                   className="reply-textarea no-scrollbar"
-                  placeholder={translatedNames[language]['content']}
+                  placeholder='Post your reply'
                   onInput={(event) => {
                     handleTextareaChange(event);
                     field.onChange(event);
@@ -74,21 +71,21 @@ const FormReply = ({ id, owner }) => {
           <button
             type="submit"
             className="reply-button"
-            disabled={!isValid || isSubmitting || loading}
+            disabled={loading}
           >
-            {loading ? 'Loading' : translatedNames[language]['buttonRep']}
+            {loading ? 'Loading' : 'Reply'}
           </button>
 
         </div>
-        {errors.content && <span className="error-message">{errors.content.message}</span>}
+        {errors.content && <span data-testid="content-error" className="error-message">{errors.content.message}</span>}
       </form>
     </div>
   );
 };
 
-FormReply.propTypes = {
+FormComment.propTypes = {
   id: PropTypes.string.isRequired,
   owner: PropTypes.object.isRequired,
 };
 
-export default FormReply;
+export default FormComment;

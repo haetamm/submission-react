@@ -4,18 +4,16 @@ import { Link, useLocation } from 'react-router-dom';
 import ButtonCreate from './ButtonCreate';
 import { navItems } from '../utils/link';
 import { isActive } from '../utils/helper';
-import { translatedNames } from '../utils/lang';
-import useLanguage from '../hooks/useLanguage';
 import usePermission from '../hooks/usePermission';
 import AvatarUser from './AvatarUser';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../stores/modal/action';
+import { typeModal } from '../utils/constans';
 
 const SideBar = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const language = useLanguage();
   const { isAuthenticated, authUser } = usePermission();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -38,7 +36,7 @@ const SideBar = () => {
                 }`}
               />
               <h3 className={`${isActive(pathname, route) ? 'active' : ''}`}>
-                {translatedNames[language][name]}
+                {name}
               </h3>
             </Link>
           ))}
@@ -46,7 +44,7 @@ const SideBar = () => {
 
           {isAuthenticated && (
             <div className="wrap-logout" >
-              <div className="wrap-avatar" onClick={toggleDropdown}>
+              <div data-testid='logout-button' className="wrap-avatar" onClick={toggleDropdown}>
                 <div className="avatar-username">
                   <AvatarUser img={authUser.avatar} />
                   <div className="username">{authUser.name}</div>
@@ -56,8 +54,9 @@ const SideBar = () => {
               {isDropdownOpen && (
                 <div className="logout-dropdown">
                   <div
+                    data-testid="logout-toggle"
                     className="logout-link"
-                    onClick={() => dispatch(openModal('logout'), toggleDropdown())}
+                    onClick={() => dispatch(openModal(typeModal.LOGOUT), toggleDropdown())}
                   >
                     <span>Log out @{authUser.name}</span>
                   </div>

@@ -51,7 +51,6 @@ const api = (() => {
         email,
         password,
       });
-      console.log(response);
       const { status, message, data } = response.data;
 
       if (status !== 'success') {
@@ -78,6 +77,7 @@ const api = (() => {
 
       return data.token;
     } catch (error) {
+      console.log(error.response.data);
       throw new Error(error.response?.data?.message || error.message);
     }
   };

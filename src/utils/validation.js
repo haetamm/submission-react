@@ -33,7 +33,7 @@ export const category = z
 export const body = z
   .string()
   .trim()
-  .min(1, { message: ' must be at least 1 characters' })
+  .min(1, { message: 'Content must be at least 1 characters' })
   .refine(
     (value) => {
       const plainText = stripHtml(value);
