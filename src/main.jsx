@@ -8,7 +8,6 @@ import router from './router';
 import 'nprogress/nprogress.css';
 import { AppProvider } from './context/AppProvider';
 
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppProvider >
